@@ -1,8 +1,10 @@
 class Line {
-  constructor(top, bottom, text) {
+  constructor(top, bot, text) {
     this.top = top;
-    this.bottom = bottom;
+    this.bot = bot;
     this.text = text;
+    this.xOffset = 40;
+    this.yOffset = 30;
   }
 
   update() {
@@ -14,7 +16,8 @@ class Line {
   }
 
   show() {
-    line(this.top.x, this.top.y, this.bot.x, this.bot.y);
+    line(this.top.x + this.xOffset, this.top.y + 2*this.yOffset,
+      this.bot.x  + this.xOffset, this.bot.y - this.yOffset);
   }
 
   released() {
