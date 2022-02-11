@@ -47,6 +47,7 @@ function createUtils() {
   // nameParent = createDiv();
   // nameParent.id('nameUtil')
   add = createButton('add');
+  add.class('button-21')
   add.position(w, 10);
   nameLabel = createDiv("Name: ");
   nameLabel.position (w + 100, 10);
@@ -94,19 +95,22 @@ function createUtils() {
 
 
   update = createButton('update');
-  update.position(w, 320);
+  update.class('button-21')
+  update.position(w, 300);
   update.mousePressed(function(){
 
   });
 
   del = createButton('delete');
-  del.position(w, 340);
+  del.position(w, 350);
+  del.class('button-21')
   del.mousePressed(function(){
     shapes[shapes.length - 1].hide();
     shapes.slice(0, shapes.length - 1);
   });
   arrange = createButton('arrange');
-  arrange.position(w, 360);
+  arrange.position(w, 400);
+  arrange.class('button-21')
   arrange.mousePressed(function(){
     for (let i = 0;i < levels; i++){
       empty_array = []
