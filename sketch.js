@@ -2,9 +2,12 @@ let w = 800;
 let h = 800;
 let levels = 5
 let add, update, del, arrange;
-let name, country, percent, radio;
+let name, country, percent, radio, createLine;
+let nameUpdate, countryUpdate, percentUpdate, radioUpdate;
 let nameLabel, countryLabel, percentLabel, radioLabel;
+let nameLabelUpdate, countryLabelUpdate, percentLabelUpdate, radioLabelUpdate;
 let nameParent;
+
 let shapesPerLevel = [];
 let empty_array = [];
 
@@ -28,7 +31,24 @@ function draw() {
     shapes[i].update();
     shapes[i].show();
   }
+
+  // for (let i = 0;i < lines.length; i++){
+  //   line(lines)
+  // }
+  for (linee of lines) {
+    line(linee.top.x, linee.top.y, linee.bot.x, linee.bot.y);
+  }
+
+
+
 }
+
+
+
+
+
+
+
 
 function mousePressed() {
   for (let i = 0;i < shapes.length; i++){
@@ -93,20 +113,18 @@ function createUtils() {
   });
 
 
-
-  update = createButton('update');
-  update.class('button-21')
-  update.position(w, 300);
-  update.mousePressed(function(){
-
-  });
-
   del = createButton('delete');
   del.position(w, 350);
   del.class('button-21')
   del.mousePressed(function(){
-    shapes[shapes.length - 1].hide();
-    shapes.slice(0, shapes.length - 1);
+    for (let i = 0;i < shapes.length; i++){
+      if (shapes[i].selected){
+        shapes[i].div.class('none')
+        shapes.splice(i,1);
+      }
+      console.log(shapes)
+    }
+
   });
   arrange = createButton('arrange');
   arrange.position(w, 400);
@@ -129,15 +147,12 @@ function createUtils() {
         for(var jj = 0; jj < len; jj++){
          for(var j = 0; j < ( len - jj -1 ); j++){
            if(crtArray[j].x > crtArray[j+1].x){
-
              var temp = crtArray[j]
              crtArray[j] = crtArray[j + 1]
              crtArray[j+1] = temp
            }
          }
        }
-
-
         for (let i = 0;i < len; i++){
             x_val = (i+ 1) * w/(len+1) - w/16;
             y_val = (k + 1)*h/levels - 3*h/(4*levels);
@@ -146,6 +161,135 @@ function createUtils() {
     }
     shapesPerLevel = []
   });
+
+
+
+    update = createButton('update');
+    update.class('button-21')
+    update.position(w, 210);
+
+    nameLabelUpdate = createDiv("Name: ");
+    nameLabelUpdate.position (w + 100, 210);
+    nameUpdate = createInput();
+    nameUpdate.position(w + 200, 210)
+
+    countryLabelUpdate = createDiv("Country: ");
+    countryLabelUpdate.position (w + 100, 230);
+    countryUpdate = createSelect();
+    for (lole of countryList) {
+      countryUpdate.option(lole)
+    }
+    countryUpdate.position(w + 200, 230)
+
+
+    radioLabelUpdate = createDiv("Type: ");
+    radioLabelUpdate.position(w + 100, 250);
+    radioUpdate = createRadio();
+    for (user of userTypes) {
+      radioUpdate.option(user)
+    }
+    radioUpdate.position(w + 200, 250);
+    update.mousePressed(function(){
+      let radioOption;
+      switch (radioUpdate.value()) {
+        case "Individual":
+          radioOption = "fa-solid fa-user-tie"
+          break;
+        case "Family":
+          radioOption = "fa-solid fa-users"
+          break;
+        case "Institution":
+          radioOption = "fa-solid fa-building-columns"
+          break;
+        default:
+          radioOption = "fa-solid fa-building-columns"
+        }
+      let count = 0;
+      let updateVal = shapes.length;
+      for (let i = 0;i < shapes.length; i++){
+        if (shapes[i].selected) {
+          count = count + 1;
+          updateVal = i;
+        }
+      }
+      if (count !== 1) {
+        if (count === 0){
+          alert("Please select an item");
+        }
+        else{
+          alert("Please select only one item");
+        }
+      }
+
+
+
+
+      // } else {
+      //   shapes[updateVal].div.class('none')
+      //   shapes.splice(updateVal,1);
+      //   innerDiv = "";
+      //   if (radioUpdate.value()){
+      //     innerDiv = innerDiv + "<i class=\"shape " + radioOption + "\"></i>";
+      //   }
+      //   else {
+      //     innerDiv = innerDiv + "<i class=\"shape " + shapes[updateVal].icon + "\"></i>";
+      //   }
+      //   if (nameUpdate.value()){
+      //     innerDiv = innerDiv + "<div class=\"shape name\">" + nameUpdate.value() + "</div>"
+      //   }
+      //   else {
+      //     innerDiv = innerDiv + "<div class=\"shape name\">" + shapes[updateVal].name + "</div>"
+      //   }
+      //   if (countryUpdate.value()){
+      //     innerDiv = innerDiv + "<div class=\"shape name\">" + countryUpdate.value() + "</div>"
+      //   }
+      //   else {
+      //     innerDiv = innerDiv + "<div class=\"shape name\">" + shapes[updateVal].country + "</div>"
+      //   }
+      //   console.log(innerDiv)
+      //   shapes[updateVal].div.class('none')
+      //   shapes[updateVal].div = createDiv(innerDiv);
+      //   shapes[updateVal].show()
+      //   shapes[updateVal].div.removeClass('none')
+      // }
+    });
+
+
+    createLine = createButton('add line');
+    createLine.position(w, 550);
+    createLine.class('button-21')
+    lineDiv = createDiv("Text: ");
+    lineDiv.position (w + 100, 560);
+    lineText = createInput();
+    lineText.position(w + 200,560)
+    createLine.mousePressed(function(){
+      let count = 0;
+      let updateVal = shapes.length;
+      let selectedTop, selectedBot;
+      for (let i = 0;i < shapes.length; i++){
+        if (shapes[i].selected) {
+          count = count + 1;
+          updateVal = i;
+          if (count === 0) {
+            selectedTop = shapes[i];
+          } else {
+            selectedBot =  shapes[i];
+          }
+        }
+      }
+      if (count !== 2) {
+          alert("Please select 2 shapes");
+      } else {
+          append(lines, new Line(selectedTop, selectedBot, lineText.value()))
+          console.log(lines)
+      }
+
+
+
+    });
+
+
+
 }
 
 
