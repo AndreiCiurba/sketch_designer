@@ -87,7 +87,7 @@ function createUtils() {
         break;
       default:
         radioOption = "fa-solid fa-building-columns"
-}
+      }
     append(shapes,
       new Shape(w/5, h/5,radioOption , name.value(), country.value()))
   });
@@ -114,20 +114,32 @@ function createUtils() {
   arrange.mousePressed(function(){
     for (let i = 0;i < levels; i++){
       empty_array = []
-      append(shapesPerLevel[i], empty_array)
+      append(shapesPerLevel, empty_array)
     }
-
-    console.log(shapesPerLevel)
+    let crtLevel;
     for (let i = 0;i < shapes.length; i++){
-      console.log(shapes[i].getLevel(levels, h))
+      crtLevel = shapes[i].getLevel(levels, h);
+      append(shapesPerLevel[crtLevel], shapes[i]);
     }
+    console.log(shapesPerLevel)
+    let x_val, y_val;
+    for (let k = 0;k < levels; k++){
+        let len = shapesPerLevel[k].length;
+        for (let i = 0;i < len; i++){
+            x_val = (i+ 1) * w/(len+1) - w/16;
+            y_val = (k + 1)*h/levels - 3*h/(4*levels);
+            shapesPerLevel[k][i].move(x_val, y_val);
+        }
+    }
+    shapesPerLevel = []
   });
 }
 
 const userTypes = [
 	"Individual",
 	"Family",
-	"Institution"]
+	"Institution",
+  "Country"]
 
 
 const countryList = [

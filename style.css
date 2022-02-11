@@ -5,12 +5,27 @@ html, body {
 canvas {
   display: block;
 }
+.instance {
 
-#nameUtil {
-  background: #bbb;
+  justify-content: center;
   display: flex;
-  text-align: center;
+  align-items: center;
+  flex-direction: column;
+  width: 80px;
 }
+
+.country{
+  width: inherit;
+  text-align: center;
+  font-size: 70%;
+}
+
+i {
+  justify-content: center;
+  font-size: 200%;
+}
+
+
 
 /* CSS */
 .button-21 {

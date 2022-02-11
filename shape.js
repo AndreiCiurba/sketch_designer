@@ -16,6 +16,7 @@ class Shape {
       "<i class=\"shape " + icon + "\"></i>" +
       "<div class=\"shape name\">" + name + "</div>" +
       "<div class=\"shape country\">" + country + "</div>")
+    this.div.class('instance')
   }
   update() {
     // Adjust location if being dragged
@@ -48,7 +49,10 @@ class Shape {
     this.x = -100;
     this.y = -100;
   }
-
+  move(x_val, y_val){
+    this.x = x_val;
+    this.y = y_val;
+  }
 
   getLevel(levels, height) {
     let i;
@@ -57,6 +61,7 @@ class Shape {
         break;
       }
     }
+    console.log(i)
     return i
   }
 
