@@ -8,6 +8,8 @@ let nameLabel, countryLabel, percentLabel, radioLabel;
 let nameLabelUpdate, countryLabelUpdate, percentLabelUpdate, radioLabelUpdate;
 let nameParent;
 
+window.size = 50;
+
 let shapesPerLevel = [];
 let empty_array = [];
 
@@ -18,8 +20,6 @@ let lines = []
 function setup() {
   createCanvas(w, h);
   createUtils();
-  // append(shapes,new Shape(3*w/4, 3*h/4, "fa-solid fa-user" , "Lorena", "Romania"))
-  // append(shapes,new Shape(w/4, h/4, "fa-solid fa-users" , "Andrei", "Romania"))
 }
 
 function draw() {
@@ -36,11 +36,8 @@ function draw() {
   //   line(lines)
   // }
   for (linee of lines) {
-    line(linee.top.x, linee.top.y, linee.bot.x, linee.bot.y);
+    linee.show();
   }
-
-
-
 }
 
 
@@ -268,13 +265,13 @@ function createUtils() {
       let selectedTop, selectedBot;
       for (let i = 0;i < shapes.length; i++){
         if (shapes[i].selected) {
-          count = count + 1;
           updateVal = i;
           if (count === 0) {
             selectedTop = shapes[i];
           } else {
-            selectedBot =  shapes[i];
+            selectedBot = shapes[i];
           }
+          count = count + 1;
         }
       }
       if (count !== 2) {

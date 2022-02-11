@@ -1,4 +1,5 @@
 html, body {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
@@ -11,8 +12,8 @@ canvas {
   display: none;
 }
 
-.instance {
 
+.instance {
   justify-content: center;
   display: flex;
   align-items: center;
@@ -26,6 +27,13 @@ canvas {
   font-size: 70%;
 }
 
+.name{
+  width: 80px;
+  text-align: center;
+  overflow-wrap: break-word;
+}
+
+
 i {
   justify-content: center;
   font-size: 200%;
@@ -38,6 +46,7 @@ i {
     align-items: center;
     flex-direction: column;
     width: 80px;
+    flex-wrap: wrap;
 }
 
 
