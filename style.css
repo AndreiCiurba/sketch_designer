@@ -1,0 +1,13 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+canvas {
+  display: block;
+}
+
+#nameUtil {
+  background: #bbb;
+  display: flex;
+  text-align: center;
+}
