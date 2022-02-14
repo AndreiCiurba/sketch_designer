@@ -3,6 +3,7 @@ let size = 50;
 
 class Shape {
   constructor(x, y, icon, name, country) {
+    this.selected = false;
     this.dragging = false;
     this.x = x;
     this.y = y;
@@ -28,9 +29,6 @@ class Shape {
 
   show() {
     stroke(0);
-    // Different fill based on state
-
-    // this.div.updateDiv(this.icon, this.name, this.country)
     this.div.position(this.x, this.y);
   }
 
@@ -41,6 +39,17 @@ class Shape {
       // If so, keep track of relative location of click to corner of rectangle
       this.offsetX = this.x - mouseX;
       this.offsetY = this.y - mouseY;
+
+
+      if (this.selected){
+        this.div.removeClass('border');
+        this.div.class('instance');
+        this.selected = false;
+      } else{
+        this.selected = true;
+        this.div.removeClass('instance');
+        this.div.class('border');
+      }
     }
   }
 
@@ -67,6 +76,7 @@ class Shape {
 
   released() {
     // Quit dragging
+
     this.dragging = false;
   }
 }
