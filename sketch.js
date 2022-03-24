@@ -1,6 +1,6 @@
-let w = 800;
-let h = 800;
-let levels = 5
+window.w = 800;
+window.h = 800;
+window.levels = 5
 let add, update, del, arrange;
 let name, country, percent, radio, createLine;
 let nameUpdate, countryUpdate, percentUpdate, radioUpdate;
@@ -19,6 +19,9 @@ let lines = []
 
 function setup() {
   createCanvas(w, h);
+  append(shapes, new Shape(w/5, h/5, "fa-solid fa-user-tie", "sadsa"));
+  append(shapes, new Shape(w/7, h/3, "fa-solid fa-user-tie", "sadsa"));
+  append(shapes, new Shape(w/1.2, h/2, "fa-solid fa-user-tie", "sadsa"));
   createUtils();
 }
 
@@ -32,20 +35,10 @@ function draw() {
     shapes[i].show();
   }
 
-  // for (let i = 0;i < lines.length; i++){
-  //   line(lines)
-  // }
-  for (linee of lines) {
-    linee.show();
+  for (l of lines) {
+    l.show();
   }
 }
-
-
-
-
-
-
-
 
 function mousePressed() {
   for (let i = 0;i < shapes.length; i++){
@@ -70,9 +63,6 @@ function createUtils() {
   nameLabel.position (w + 100, 10);
   name = createInput();
   name.position(w + 200, 10)
-  // name.parent(nameParent)
-  // nameLabel.parent(nameParent)
-  // add.parent(nameParent)
 
   countryLabel = createDiv("Country: ");
   countryLabel.position (w + 100, 30);
@@ -114,13 +104,21 @@ function createUtils() {
   del.position(w, 350);
   del.class('button-21')
   del.mousePressed(function(){
+
+
     for (let i = 0;i < shapes.length; i++){
       if (shapes[i].selected){
         shapes[i].div.class('none')
         shapes.splice(i,1);
       }
-      console.log(shapes)
     }
+
+    for (let i = 0;i < lines.length; i++){
+      if (lines[i].top.selected || lines[i].bot.selected) {
+        lines.splice(i, 1);
+      }
+    }
+
 
   });
   arrange = createButton('arrange');
@@ -217,38 +215,6 @@ function createUtils() {
           alert("Please select only one item");
         }
       }
-
-
-
-
-      // } else {
-      //   shapes[updateVal].div.class('none')
-      //   shapes.splice(updateVal,1);
-      //   innerDiv = "";
-      //   if (radioUpdate.value()){
-      //     innerDiv = innerDiv + "<i class=\"shape " + radioOption + "\"></i>";
-      //   }
-      //   else {
-      //     innerDiv = innerDiv + "<i class=\"shape " + shapes[updateVal].icon + "\"></i>";
-      //   }
-      //   if (nameUpdate.value()){
-      //     innerDiv = innerDiv + "<div class=\"shape name\">" + nameUpdate.value() + "</div>"
-      //   }
-      //   else {
-      //     innerDiv = innerDiv + "<div class=\"shape name\">" + shapes[updateVal].name + "</div>"
-      //   }
-      //   if (countryUpdate.value()){
-      //     innerDiv = innerDiv + "<div class=\"shape name\">" + countryUpdate.value() + "</div>"
-      //   }
-      //   else {
-      //     innerDiv = innerDiv + "<div class=\"shape name\">" + shapes[updateVal].country + "</div>"
-      //   }
-      //   console.log(innerDiv)
-      //   shapes[updateVal].div.class('none')
-      //   shapes[updateVal].div = createDiv(innerDiv);
-      //   shapes[updateVal].show()
-      //   shapes[updateVal].div.removeClass('none')
-      // }
     });
 
 
@@ -277,19 +243,32 @@ function createUtils() {
       if (count !== 2) {
           alert("Please select 2 shapes");
       } else {
-          append(lines, new Line(selectedTop, selectedBot, lineText.value()))
-          console.log(lines)
+          for (linee of lines) {
+            //checkTop
+            for (parent of linee.top) {
+              if (compareShapes(selectedTop, parent)){
+                append(linee.bot, selectedBot)
+                return;
+              }
+            }
+            //checkBot
+            for (child of linee.bot) {
+              if (compareShapes(selectedBot, child)){
+                append(linee.top, selectedTop)
+                return;
+              }
+            }
+          }
+
+          append(lines, new Line([selectedTop], [selectedBot], lineText.value()))
       }
-
-
-
     });
-
-
 
 }
 
-
+function compareShapes(shape1, shape2) {
+  return JSON.stringify(shape1) === JSON.stringify(shape2)
+}
 
 
 const userTypes = [
