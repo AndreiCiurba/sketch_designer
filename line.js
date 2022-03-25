@@ -4,7 +4,13 @@ class Line {
     this.bot = bot;
     this.text = text;
     this.xOffset = 40;
-    this.yOffset = 20;;
+    this.yOffset = 20;
+
+    this.divLen = 80;
+    this.childHead = 50;
+    this.topOffset = 50;
+
+
   }
   setTop(list) {this.top = list;}
   setBot(list) {this.bot = list;}
@@ -22,6 +28,8 @@ class Line {
 
     if (this.top.length > 1 && this.bot.length > 1) {
       alert("Can't have many to many relation");
+      this.top = [];
+      this.bot = [];
       return;
     }
 
@@ -32,7 +40,7 @@ class Line {
         this.top = this.bot;
         this.bot = temp;
       }
-        line(this.top[0].x + this.xOffset,this.top[0].y + this.yOffset + 80,
+        line(this.top[0].x + this.xOffset,this.top[0].y + this.yOffset + this.divLen,
              this.bot[0].x + this.xOffset,this.bot[0].y - this.yOffset);
      }
 
@@ -40,20 +48,19 @@ class Line {
      //order later
      if (this.top.length > 1 && this.bot.length == 1) {
        for (let item of this.top) {
-         line(item.x + item.offsetX, item.y + this.yOffset,
-              item.x + item.offsetX, this.lowestParentYOffset())
+         line(item.x - item.offsetX, item.y + this.yOffset + this.divLen,
+              item.x - item.offsetX, this.bot[0].y - this.topOffset)
        }
-       line(this.sidesOfParents()[0] + this.xOffset,this.lowestParentYOffset(),
-            this.sidesOfParents()[1] + this.xOffset,this.lowestParentYOffset())
+       line(this.sidesOfParents()[0] + this.xOffset,this.bot[0].y - this.topOffset,
+            this.sidesOfParents()[1] + this.xOffset,this.bot[0].y - this.topOffset)
 
-       line(this.bot[0].x + this.xOffset,this.lowestParentYOffset(),
+       line(this.bot[0].x + this.xOffset,this.bot[0].y - this.topOffset,
             this.bot[0].x + this.xOffset,this.bot[0].y - this.yOffset);
       }
 
 
       //one to many
       if (this.top.length == 1 && this.bot.length > 1) {
-        console.log("here?")
         line(this.top[0].x + this.xOffset,this.top[0].y + this.yOffset + 80,
              this.top[0].x + this.xOffset,this.highestChildYOffset());
 
@@ -69,18 +76,14 @@ class Line {
   }
 
 
-
-
-
-
 highestChildYOffset() {
     let lvl = 99999999;
     for (let item of this.bot) {
       if (item.getLevel() < lvl) {
-        lvl = item.getLevel()*(window.h/window.levels) ;
+        lvl = item.getLevel() ;
       }
     }
-    return lvl - 25;
+    return lvl*(window.h/window.levels) - this.childHead;
   }
 
 sidesOfKids() {
@@ -96,13 +99,13 @@ sidesOfKids() {
     return sides;
   }
 lowestParentYOffset() {
-    let lvl = 0;
+    let lvl = -10;
     for (let item of this.top) {
       if (item.getLevel() > lvl) {
-        lvl = item.getLevel()*(window.h/window.levels);
+        lvl = item.getLevel() + 1;
       }
     }
-    return lvl + 25;
+    return lvl*(window.h/window.levels) + this.divLen;
   }
 
 sidesOfParents() {

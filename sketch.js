@@ -1,6 +1,6 @@
 window.w = 800;
 window.h = 800;
-window.levels = 5
+window.levels = 20;
 let add, update, del, arrange;
 let name, country, percent, radio, createLine;
 let nameUpdate, countryUpdate, percentUpdate, radioUpdate;
@@ -27,9 +27,13 @@ function setup() {
 
 function draw() {
   background(220);
-  for (let i = 0;i < levels; i++){
-    line(0, (i + 1)*h/levels, w, (i + 1)*h/levels)
-  }
+
+  // fill("blue");
+  // for (let i = 0;i < levels; i++){
+  //   line(0, (i + 1)*h/levels, w, (i + 1)*h/levels)
+  // }
+  // fill("black")
+
   for (let i = 0;i < shapes.length; i++){
     shapes[i].update();
     shapes[i].show();
@@ -99,23 +103,32 @@ function createUtils() {
       new Shape(w/5, h/5,radioOption , name.value(), country.value()))
   });
 
-
   del = createButton('delete');
   del.position(w, 350);
   del.class('button-21')
   del.mousePressed(function(){
+    count = 0;
+    toDeleteList = []
+    for (linee of lines) {
+      for (item of linee.top) {
+        if (item.selected) {
+          append(toDeleteList, count);
+        }
+        if (item.selected) {
+          append(toDeleteList, count);
+        }
+      }
+      count = count + 1;
+    }
 
-
-    for (let i = 0;i < shapes.length; i++){
+    toDeleteList.sort();
+    for(let i = toDeleteList.length - 1; i>=0; i = i-1) {
+      lines.splice(toDeleteList[i], 1);
+    }
+    for (let i = shapes.length - 1;i >= 0; i--){
       if (shapes[i].selected){
         shapes[i].div.class('none')
         shapes.splice(i,1);
-      }
-    }
-
-    for (let i = 0;i < lines.length; i++){
-      if (lines[i].top.selected || lines[i].bot.selected) {
-        lines.splice(i, 1);
       }
     }
 
@@ -243,23 +256,31 @@ function createUtils() {
       if (count !== 2) {
           alert("Please select 2 shapes");
       } else {
-          for (linee of lines) {
-            //checkTop
-            for (parent of linee.top) {
-              if (compareShapes(selectedTop, parent)){
-                append(linee.bot, selectedBot)
-                return;
-              }
-            }
-            //checkBot
-            for (child of linee.bot) {
-              if (compareShapes(selectedBot, child)){
-                append(linee.top, selectedTop)
-                return;
-              }
-            }
+        //compareLevels
+          if (selectedBot.getLevel() < selectedTop.getLevel()) {
+            [selectedBot, selectedTop] = [selectedTop, selectedBot];
           }
 
+          for (linee of lines) {
+                //checkTop
+              for (parent of linee.top) {
+                if (compareShapes(selectedTop, parent)){
+                  if (linee.top.length === 1) {
+                    append(linee.bot, selectedBot)
+                    return;
+                  }
+                }
+              }
+              //checkBot
+              for (child of linee.bot) {
+                if (compareShapes(selectedBot, child)){
+                    if (linee.top.length === 1) {
+                    append(linee.top, selectedTop)
+                    return;
+                  }
+                }
+              }
+            }
           append(lines, new Line([selectedTop], [selectedBot], lineText.value()))
       }
     });
