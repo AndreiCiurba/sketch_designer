@@ -4,7 +4,7 @@ class Line {
     this.bot = bot;
     this.text = text;
     this.xOffset = 40;
-    this.yOffset = 20;;
+    this.yOffset = 30;
   }
   setTop(list) {this.top = list;}
   setBot(list) {this.bot = list;}
@@ -19,6 +19,7 @@ class Line {
   }
 
   show() {
+
 
     if (this.top.length > 1 && this.bot.length > 1) {
       alert("Can't have many to many relation");
@@ -116,6 +117,7 @@ sidesOfParents() {
       }
     }
     return sides;
+
   }
 
   released() {

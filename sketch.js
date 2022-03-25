@@ -35,8 +35,13 @@ function draw() {
     shapes[i].show();
   }
 
-  for (l of lines) {
-    l.show();
+
+  // for (let i = 0;i < lines.length; i++){
+  //   line(lines)
+  // }
+  for (linee of lines) {
+    linee.show();
+
   }
 }
 
