@@ -7,6 +7,8 @@ class Shape {
     this.dragging = false;
     this.x = x;
     this.y = y;
+    this.divH = 30;
+
 
     this.offsetX = 0;
     this.offsetY = 0;
@@ -26,12 +28,10 @@ class Shape {
       this.y = mouseY + this.offsetY;
     }
   }
-
   show() {
     stroke(0);
     this.div.position(this.x, this.y);
   }
-
   pressed() {
     // Did I click on the rectangle?
     if (mouseX > this.x && mouseX < this.x + size  && mouseY > this.y && mouseY < this.y + size) {
@@ -52,8 +52,6 @@ class Shape {
       }
     }
   }
-
-
   hide(){
     this.x = -100;
     this.y = -100;
@@ -62,21 +60,17 @@ class Shape {
     this.x = x_val;
     this.y = y_val;
   }
-
-  getLevel(levels, height) {
+  getLevel(levels = window.levels, height = window.h) {
     let i;
     for (i = 0;i < levels; i++){
       if (this.y < (i + 1)*h/levels){
         break;
       }
     }
-    console.log(i)
     return i
   }
-
   released() {
     // Quit dragging
-
     this.dragging = false;
   }
 }
