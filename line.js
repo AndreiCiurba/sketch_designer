@@ -9,13 +9,8 @@ class Line {
     this.divLen = 80;
     this.childHead = 50;
     this.topOffset = 50;
-
-
+    this.text = createDiv(text);
   }
-  setTop(list) {this.top = list;}
-  setBot(list) {this.bot = list;}
-  getTop() {return this.top;}
-  getBot() {return this.bot;}
 
   update() {
     if (this.dragging) {
@@ -25,7 +20,6 @@ class Line {
   }
 
   show() {
-
     if (this.top.length > 1 && this.bot.length > 1) {
       alert("Can't have many to many relation");
       this.top = [];
@@ -40,13 +34,21 @@ class Line {
         this.top = this.bot;
         this.bot = temp;
       }
-        line(this.top[0].x + this.xOffset,this.top[0].y + this.yOffset + this.divLen,
+
+      this.text.position((this.top[0].x + this.bot[0].x)/2,
+                        (this.top[0].y + this.bot[0].y)/2);
+
+      line(this.top[0].x + this.xOffset,this.top[0].y + this.yOffset + this.divLen,
              this.bot[0].x + this.xOffset,this.bot[0].y - this.yOffset);
      }
 
      //many to one
      //order later
      if (this.top.length > 1 && this.bot.length == 1) {
+       this.text.position((this.top[0].x + this.bot[0].x)/2,
+                         (this.top[0].y + this.bot[0].y)/2);
+
+
        for (let item of this.top) {
          line(item.x - item.offsetX, item.y + this.yOffset + this.divLen,
               item.x - item.offsetX, this.bot[0].y - this.topOffset)
@@ -58,7 +60,6 @@ class Line {
             this.bot[0].x + this.xOffset,this.bot[0].y - this.yOffset);
       }
 
-
       //one to many
       if (this.top.length == 1 && this.bot.length > 1) {
         line(this.top[0].x + this.xOffset,this.top[0].y + this.yOffset + 80,
@@ -66,7 +67,6 @@ class Line {
 
         line(this.sidesOfKids()[0] + this.xOffset,this.highestChildYOffset(),
              this.sidesOfKids()[1] + this.xOffset,this.highestChildYOffset());
-
 
         for (let item of this.bot) {
           line(item.x - item.offsetX, this.highestChildYOffset(),

@@ -8,15 +8,13 @@ class Shape {
     this.x = x;
     this.y = y;
     this.divH = 30;
-
-
     this.offsetX = 0;
     this.offsetY = 0;
     this.icon = icon;
     this.name = name;
     this.country = country;
     this.div = createDiv(
-      "<i class=\"shape " + icon + "\"></i>" +
+      icon +
       "<div class=\"shape name\">" + name + "</div>" +
       "<div class=\"shape country\">" + country + "</div>")
     this.div.class('instance')

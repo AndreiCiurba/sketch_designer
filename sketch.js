@@ -1,6 +1,7 @@
 window.w = 800;
 window.h = 800;
 window.levels = 20;
+window.size = 50;
 let add, update, del, arrange;
 let name, country, percent, radio, createLine;
 let nameUpdate, countryUpdate, percentUpdate, radioUpdate;
@@ -8,37 +9,29 @@ let nameLabel, countryLabel, percentLabel, radioLabel;
 let nameLabelUpdate, countryLabelUpdate, percentLabelUpdate, radioLabelUpdate;
 let nameParent;
 
-window.size = 50;
-
 let shapesPerLevel = [];
 let empty_array = [];
 
 let shapes = []
 let lines = []
 
-
 function setup() {
   createCanvas(w, h);
-  append(shapes, new Shape(w/5, h/5, "fa-solid fa-user-tie", "sadsa"));
-  append(shapes, new Shape(w/7, h/3, "fa-solid fa-user-tie", "sadsa"));
-  append(shapes, new Shape(w/1.2, h/2, "fa-solid fa-user-tie", "sadsa"));
+  append(shapes, new Shape(w/5, h/5, "<i class=\"fa-solid fa-user-tie\"></i>", "sadsa"));
+  append(shapes, new Shape(w/7, h/3,"<i class=\"fa-solid fa-user-tie\"></i>", "sadsa"));
+  append(shapes, new Shape(w/1.2, h/2,"<i class=\"fa-solid fa-user-tie\"></i>", "sadsa"));
   createUtils();
 }
 
 function draw() {
   background(220);
-
-  // fill("blue");
   // for (let i = 0;i < levels; i++){
   //   line(0, (i + 1)*h/levels, w, (i + 1)*h/levels)
   // }
-  // fill("black")
-
   for (let i = 0;i < shapes.length; i++){
     shapes[i].update();
     shapes[i].show();
   }
-
   for (l of lines) {
     l.show();
   }
@@ -51,7 +44,6 @@ function mousePressed() {
 }
 
 function mouseReleased() {
-
   for (let i = 0;i < shapes.length; i++){
     shapes[i].released();;
   }
@@ -60,231 +52,11 @@ function mouseReleased() {
 function createUtils() {
   // nameParent = createDiv();
   // nameParent.id('nameUtil')
-  add = createButton('add');
-  add.class('button-21')
-  add.position(w, 10);
-  nameLabel = createDiv("Name: ");
-  nameLabel.position (w + 100, 10);
-  name = createInput();
-  name.position(w + 200, 10)
-
-  countryLabel = createDiv("Country: ");
-  countryLabel.position (w + 100, 30);
-  country = createSelect();
-  for (cntry of countryList) {
-    country.option(cntry)
-  }
-  country.position(w + 200, 30)
-
-
-  radioLabel = createDiv("Type: ");
-  radioLabel.position(w + 100, 50);
-  radio = createRadio();
-  for (user of userTypes) {
-    radio.option(user)
-  }
-  radio.position(w + 200, 50)
-  add.mousePressed(function(){
-    let radioOption;
-    switch (radio.value()) {
-      case "Individual":
-        radioOption = "fa-solid fa-user-tie"
-        break;
-      case "Family":
-        radioOption = "fa-solid fa-users"
-        break;
-      case "Institution":
-        radioOption = "fa-solid fa-building-columns"
-        break;
-      default:
-        radioOption = "fa-solid fa-building-columns"
-      }
-    append(shapes,
-      new Shape(w/5, h/5,radioOption , name.value(), country.value()))
-  });
-
-  del = createButton('delete');
-  del.position(w, 350);
-  del.class('button-21')
-  del.mousePressed(function(){
-    count = 0;
-    toDeleteList = []
-    for (linee of lines) {
-      for (item of linee.top) {
-        if (item.selected) {
-          append(toDeleteList, count);
-        }
-        if (item.selected) {
-          append(toDeleteList, count);
-        }
-      }
-      count = count + 1;
-    }
-
-    toDeleteList.sort();
-    for(let i = toDeleteList.length - 1; i>=0; i = i-1) {
-      lines.splice(toDeleteList[i], 1);
-    }
-    for (let i = shapes.length - 1;i >= 0; i--){
-      if (shapes[i].selected){
-        shapes[i].div.class('none')
-        shapes.splice(i,1);
-      }
-    }
-
-
-  });
-  arrange = createButton('arrange');
-  arrange.position(w, 400);
-  arrange.class('button-21')
-  arrange.mousePressed(function(){
-    for (let i = 0;i < levels; i++){
-      empty_array = []
-      append(shapesPerLevel, empty_array)
-    }
-    let crtLevel;
-    for (let i = 0;i < shapes.length; i++){
-      crtLevel = shapes[i].getLevel(levels, h);
-      append(shapesPerLevel[crtLevel], shapes[i]);
-    }
-    let x_val, y_val;
-    for (let k = 0;k < levels; k++){
-        let len = shapesPerLevel[k].length;
-        let crtArray = shapesPerLevel[k]
-        //sort array
-        for(var jj = 0; jj < len; jj++){
-         for(var j = 0; j < ( len - jj -1 ); j++){
-           if(crtArray[j].x > crtArray[j+1].x){
-             var temp = crtArray[j]
-             crtArray[j] = crtArray[j + 1]
-             crtArray[j+1] = temp
-           }
-         }
-       }
-        for (let i = 0;i < len; i++){
-            x_val = (i+ 1) * w/(len+1) - w/16;
-            y_val = (k + 1)*h/levels - 3*h/(4*levels);
-            crtArray[i].move(x_val, y_val);
-        }
-    }
-    shapesPerLevel = []
-  });
-
-
-
-    update = createButton('update');
-    update.class('button-21')
-    update.position(w, 210);
-
-    nameLabelUpdate = createDiv("Name: ");
-    nameLabelUpdate.position (w + 100, 210);
-    nameUpdate = createInput();
-    nameUpdate.position(w + 200, 210)
-
-    countryLabelUpdate = createDiv("Country: ");
-    countryLabelUpdate.position (w + 100, 230);
-    countryUpdate = createSelect();
-    for (lole of countryList) {
-      countryUpdate.option(lole)
-    }
-    countryUpdate.position(w + 200, 230)
-
-
-    radioLabelUpdate = createDiv("Type: ");
-    radioLabelUpdate.position(w + 100, 250);
-    radioUpdate = createRadio();
-    for (user of userTypes) {
-      radioUpdate.option(user)
-    }
-    radioUpdate.position(w + 200, 250);
-    update.mousePressed(function(){
-      let radioOption;
-      switch (radioUpdate.value()) {
-        case "Individual":
-          radioOption = "fa-solid fa-user-tie"
-          break;
-        case "Family":
-          radioOption = "fa-solid fa-users"
-          break;
-        case "Institution":
-          radioOption = "fa-solid fa-building-columns"
-          break;
-        default:
-          radioOption = "fa-solid fa-building-columns"
-        }
-      let count = 0;
-      let updateVal = shapes.length;
-      for (let i = 0;i < shapes.length; i++){
-        if (shapes[i].selected) {
-          count = count + 1;
-          updateVal = i;
-        }
-      }
-      if (count !== 1) {
-        if (count === 0){
-          alert("Please select an item");
-        }
-        else{
-          alert("Please select only one item");
-        }
-      }
-    });
-
-
-    createLine = createButton('add line');
-    createLine.position(w, 550);
-    createLine.class('button-21')
-    lineDiv = createDiv("Text: ");
-    lineDiv.position (w + 100, 560);
-    lineText = createInput();
-    lineText.position(w + 200,560)
-    createLine.mousePressed(function(){
-      let count = 0;
-      let updateVal = shapes.length;
-      let selectedTop, selectedBot;
-      for (let i = 0;i < shapes.length; i++){
-        if (shapes[i].selected) {
-          updateVal = i;
-          if (count === 0) {
-            selectedTop = shapes[i];
-          } else {
-            selectedBot = shapes[i];
-          }
-          count = count + 1;
-        }
-      }
-      if (count !== 2) {
-          alert("Please select 2 shapes");
-      } else {
-        //compareLevels
-          if (selectedBot.getLevel() < selectedTop.getLevel()) {
-            [selectedBot, selectedTop] = [selectedTop, selectedBot];
-          }
-
-          for (linee of lines) {
-                //checkTop
-              for (parent of linee.top) {
-                if (compareShapes(selectedTop, parent)){
-                  if (linee.top.length === 1) {
-                    append(linee.bot, selectedBot)
-                    return;
-                  }
-                }
-              }
-              //checkBot
-              for (child of linee.bot) {
-                if (compareShapes(selectedBot, child)){
-                    if (linee.top.length === 1) {
-                    append(linee.top, selectedTop)
-                    return;
-                  }
-                }
-              }
-            }
-          append(lines, new Line([selectedTop], [selectedBot], lineText.value()))
-      }
-    });
-
+  addElement();
+  arrangeElement();
+  addLine();
+  deleteElement();
+  updateElement();
 }
 
 function compareShapes(shape1, shape2) {
@@ -296,10 +68,12 @@ const userTypes = [
 	"Individual",
 	"Family",
 	"Institution",
-  "Country"]
+  "Country Flag",
+  "Building"]
 
 
 const countryList = [
+  "Other",
 	"Afghanistan",
 	"Albania",
 	"Algeria",
