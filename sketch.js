@@ -1,6 +1,6 @@
 window.w = 800;
 window.h = 800;
-window.levels = 5
+window.levels = 10;
 let add, update, del, arrange;
 let name, country, percent, radio, createLine;
 let nameUpdate, countryUpdate, percentUpdate, radioUpdate;
@@ -264,8 +264,13 @@ function createUtils() {
               }
             }
           }
-
-          append(lines, new Line([selectedTop], [selectedBot], lineText.value()))
+		  let createdLine;
+		  try {
+		  	createdLine = new Line([selectedTop], [selectedBot], lineText.value());
+		  } catch (e) {
+			return;
+		  }
+          append(lines, createdLine);
       }
     });
 

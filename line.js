@@ -23,7 +23,7 @@ class Line {
 
     if (this.top.length > 1 && this.bot.length > 1) {
       alert("Can't have many to many relation");
-      return;
+      throw new Error("Cannot have many to many relation.")
     }
 
     //one to one
